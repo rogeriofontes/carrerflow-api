@@ -1,0 +1,806 @@
+{
+  "info": {
+    "name": "CareerFlow — Fluxo Completo de Cadastro",
+    "description": "Fluxo completo de cadastro e uso da API CareerFlow.\n\nExecute as requests na ordem (1 a 12) para testar o ciclo inteiro:\nRegister → Profile → Challenge → Submission STAR → Avaliação → Matching → Dashboard\n\nTokens e IDs são salvos automaticamente entre requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api/v1", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "studentToken", "value": "", "type": "string" },
+    { "key": "companyToken", "value": "", "type": "string" },
+    { "key": "studentUserId", "value": "", "type": "string" },
+    { "key": "companyUserId", "value": "", "type": "string" },
+    { "key": "studentProfileId", "value": "", "type": "string" },
+    { "key": "companyId", "value": "", "type": "string" },
+    { "key": "challengeId", "value": "", "type": "string" },
+    { "key": "submissionId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Fluxo Completo de Cadastro",
+      "description": "Execute na ordem: 01 → 12",
+      "item": [
+        {
+          "name": "01 — Registrar Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@exemplo.com\",\n  \"password\": \"senha1234\",\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('adminToken', jsonData.accessToken);",
+                  "    pm.test('Admin registrado com sucesso', function() {",
+                  "        pm.expect(jsonData.accessToken).to.not.be.empty;",
+                  "    });",
+                  "    console.log('✓ Admin Token salvo');",
+                  "} else {",
+                  "    pm.test('Registro falhou — status ' + pm.response.code, function() {",
+                  "        pm.expect.fail(pm.response.text());",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 — Registrar Estudante",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"João Silva\",\n  \"email\": \"joao@student.com\",\n  \"password\": \"senha1234\",\n  \"role\": \"STUDENT\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('studentToken', jsonData.accessToken);",
+                  "    if (jsonData.user && jsonData.user.id) {",
+                  "        pm.collectionVariables.set('studentUserId', jsonData.user.id);",
+                  "    }",
+                  "    pm.test('Estudante registrado com sucesso', function() {",
+                  "        pm.expect(jsonData.accessToken).to.not.be.empty;",
+                  "    });",
+                  "    console.log('✓ Student Token salvo');",
+                  "} else {",
+                  "    pm.test('Registro falhou — status ' + pm.response.code, function() {",
+                  "        pm.expect.fail(pm.response.text());",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 — Registrar Empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tech Corp RH\",\n  \"email\": \"rh@empresa.com\",\n  \"password\": \"senha1234\",\n  \"role\": \"COMPANY\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('companyToken', jsonData.accessToken);",
+                  "    if (jsonData.user && jsonData.user.id) {",
+                  "        pm.collectionVariables.set('companyUserId', jsonData.user.id);",
+                  "    }",
+                  "    pm.test('Empresa registrada com sucesso', function() {",
+                  "        pm.expect(jsonData.accessToken).to.not.be.empty;",
+                  "    });",
+                  "    console.log('✓ Company Token salvo');",
+                  "} else {",
+                  "    pm.test('Registro falhou — status ' + pm.response.code, function() {",
+                  "        pm.expect.fail(pm.response.text());",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 — Criar Perfil do Estudante",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"course\": \"Engenharia de Software\",\n  \"institution\": \"Universidade Federal\",\n  \"skills\": [\"Java\", \"Spring Boot\", \"PostgreSQL\", \"Docker\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/students",
+              "host": ["{{baseUrl}}"],
+              "path": ["students"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('studentProfileId', jsonData.id);",
+                  "    pm.test('Perfil de estudante criado', function() {",
+                  "        pm.expect(jsonData.id).to.not.be.empty;",
+                  "        pm.expect(jsonData.course).to.eql('Engenharia de Software');",
+                  "    });",
+                  "    console.log('✓ Student Profile ID salvo: ' + jsonData.id);",
+                  "} else {",
+                  "    pm.test('Criar perfil falhou — status ' + pm.response.code, function() {",
+                  "        pm.expect.fail(pm.response.text());",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 — Criar Perfil da Empresa",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{companyToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tech Corp Solutions\",\n  \"segment\": \"Technology\",\n  \"description\": \"Empresa de desenvolvimento de software\",\n  \"website\": \"https://techcorp.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/companies",
+              "host": ["{{baseUrl}}"],
+              "path": ["companies"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('companyId', jsonData.id);",
+                  "    pm.test('Perfil de empresa criado', function() {",
+                  "        pm.expect(jsonData.id).to.not.be.empty;",
+                  "        pm.expect(jsonData.name).to.eql('Tech Corp Solutions');",
+                  "    });",
+                  "    console.log('✓ Company ID salvo: ' + jsonData.id);",
+                  "} else {",
+                  "    pm.test('Criar empresa falhou — status ' + pm.response.code, function() {",
+                  "        pm.expect.fail(pm.response.text());",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 — Empresa Cria um Desafio",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{companyToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Desenvolver API REST com Spring Boot\",\n  \"description\": \"Crie uma API REST completa com autenticação JWT, CRUD e documentação Swagger.\",\n  \"difficulty\": \"MEDIUM\",\n  \"skills\": [\"Java\", \"Spring Boot\", \"REST\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/challenges",
+              "host": ["{{baseUrl}}"],
+              "path": ["challenges"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('challengeId', jsonData.id);",
+                  "    pm.test('Desafio criado', function() {",
+                  "        pm.expect(jsonData.id).to.not.be.empty;",
+                  "        pm.expect(jsonData.title).to.include('API REST');",
+                  "    });",
+                  "    console.log('✓ Challenge ID salvo: ' + jsonData.id);",
+                  "} else {",
+                  "    pm.test('Criar desafio falhou — status ' + pm.response.code, function() {",
+                  "        pm.expect.fail(pm.response.text());",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "07 — Listar Desafios (público)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/challenges?page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["challenges"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Desafios listados com sucesso', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.content).to.be.an('array');",
+                  "    pm.expect(jsonData.content.length).to.be.greaterThan(0);",
+                  "});",
+                  "console.log('✓ ' + pm.response.json().totalElements + ' desafios encontrados');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "08 — Estudante Submete Resposta STAR",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"challengeId\": \"{{challengeId}}\",\n  \"situation\": \"Na empresa onde eu estagiava, o sistema legado causava lentidão e erros frequentes no atendimento ao cliente.\",\n  \"task\": \"Fui designado para redesenhar a API principal, migrando de um monolito para uma arquitetura moderna.\",\n  \"action\": \"Implementei a nova API usando Spring Boot 3 com Clean Architecture, autenticação JWT, testes automatizados e documentação Swagger. Fiz deploy com Docker.\",\n  \"result\": \"O tempo de resposta caiu 60%, os erros reduziram 90% e a equipe ganhou autonomia com a documentação automática.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/submissions",
+              "host": ["{{baseUrl}}"],
+              "path": ["submissions"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('submissionId', jsonData.id);",
+                  "    pm.test('Submissão STAR enviada', function() {",
+                  "        pm.expect(jsonData.id).to.not.be.empty;",
+                  "        pm.expect(jsonData.situation).to.not.be.empty;",
+                  "    });",
+                  "    console.log('✓ Submission ID salvo: ' + jsonData.id);",
+                  "} else {",
+                  "    pm.test('Submissão falhou — status ' + pm.response.code, function() {",
+                  "        pm.expect.fail(pm.response.text());",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "09 — Ver Avaliação STAR",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/evaluations/submission/{{submissionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["evaluations", "submission", "{{submissionId}}"]
+            },
+            "description": "A avaliação é criada automaticamente via evento assíncrono após a submissão. Aguarde ~2 segundos após o passo 08."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.test('Avaliação STAR recebida', function() {",
+                  "        pm.expect(jsonData.finalScore).to.be.a('number');",
+                  "        pm.expect(jsonData.finalScore).to.be.greaterThan(0);",
+                  "    });",
+                  "    console.log('✓ Score final: ' + jsonData.finalScore);",
+                  "} else {",
+                  "    pm.test('Avaliação ainda não processada — tente novamente em alguns segundos', function() {",
+                  "        console.log('⏳ Avaliação assíncrona em andamento...');",
+                  "    });",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Aguarda 2 segundos para a avaliação assíncrona processar",
+                  "setTimeout(function() {}, 2000);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10 — Ver Perfil do Estudante (score atualizado)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["students", "me"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Perfil do estudante retornado', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.course).to.eql('Engenharia de Software');",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "console.log('✓ Score: ' + jsonData.overallScore + ' | Desafios: ' + jsonData.challengesCompleted);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11 — Empresa Busca Matching",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{companyToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skills\": [\"Java\", \"Spring Boot\"],\n  \"minScore\": 3.0,\n  \"minChallengesCompleted\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/matching/search?page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["matching", "search"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Matching executado com sucesso', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.content).to.be.an('array');",
+                  "});",
+                  "console.log('✓ ' + pm.response.json().totalElements + ' estudantes encontrados');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12 — Dashboard (login Admin seed)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboard"]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Se não tem adminToken do passo 01, faz login com o admin seed",
+                  "var adminToken = pm.collectionVariables.get('adminToken');",
+                  "if (!adminToken || adminToken === '') {",
+                  "    var baseUrl = pm.collectionVariables.get('baseUrl');",
+                  "    pm.sendRequest({",
+                  "        url: baseUrl + '/auth/login',",
+                  "        method: 'POST',",
+                  "        header: { 'Content-Type': 'application/json' },",
+                  "        body: {",
+                  "            mode: 'raw',",
+                  "            raw: JSON.stringify({ email: 'admin@careerflow.com', password: 'admin123!' })",
+                  "        }",
+                  "    }, function(err, res) {",
+                  "        if (!err && res.code === 200) {",
+                  "            var json = res.json();",
+                  "            pm.collectionVariables.set('adminToken', json.accessToken);",
+                  "            console.log('✓ Admin login automático — Token salvo');",
+                  "        }",
+                  "    });",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Dashboard carregado', function() {",
+                  "    pm.response.to.have.status(200);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.totalStudents).to.be.a('number');",
+                  "    pm.expect(jsonData.totalCompanies).to.be.a('number');",
+                  "    pm.expect(jsonData.totalChallenges).to.be.a('number');",
+                  "});",
+                  "var d = pm.response.json();",
+                  "console.log('✓ Dashboard: ' + d.totalStudents + ' estudantes, ' + d.totalCompanies + ' empresas, ' + d.totalChallenges + ' desafios, score médio: ' + d.averageScore);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Login com Usuários Seed",
+      "description": "Use estas requests para logar com os usuários que já vêm no banco (migration V7).",
+      "item": [
+        {
+          "name": "Login Admin (seed)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@careerflow.com\",\n  \"password\": \"admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.collectionVariables.set('adminToken', jsonData.accessToken);",
+                  "pm.test('Admin logado', function() { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login Estudante (seed — maria@student.com)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"maria@student.com\",\n  \"password\": \"admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.collectionVariables.set('studentToken', jsonData.accessToken);",
+                  "if (jsonData.user && jsonData.user.id) { pm.collectionVariables.set('studentUserId', jsonData.user.id); }",
+                  "pm.test('Estudante logado', function() { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login Empresa (seed — rh@techcorp.com)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rh@techcorp.com\",\n  \"password\": \"admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.collectionVariables.set('companyToken', jsonData.accessToken);",
+                  "if (jsonData.user && jsonData.user.id) { pm.collectionVariables.set('companyUserId', jsonData.user.id); }",
+                  "pm.test('Empresa logada', function() { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login Instituição (seed — coord@unixyz.edu.br)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"coord@unixyz.edu.br\",\n  \"password\": \"admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "pm.collectionVariables.set('institutionToken', jsonData.accessToken);",
+                  "pm.test('Instituição logada', function() { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Requests Extras",
+      "description": "Requests adicionais úteis para explorar a API.",
+      "item": [
+        {
+          "name": "Ver Meu Perfil (qualquer role)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Listar Todos os Usuários (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users?page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Perfil Estudante",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{studentToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"course\": \"Engenharia de Software\",\n  \"institution\": \"Universidade Federal\",\n  \"skills\": [\"Java\", \"Spring Boot\", \"PostgreSQL\", \"Docker\", \"Kubernetes\", \"React\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/students/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["students", "me"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Perfil Empresa",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{companyToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tech Corp Solutions LTDA\",\n  \"segment\": \"Technology & Innovation\",\n  \"description\": \"Empresa líder em desenvolvimento de software e IA\",\n  \"website\": \"https://techcorp.com.br\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/companies/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["companies", "me"]
+            }
+          }
+        },
+        {
+          "name": "Filtrar Desafios por Dificuldade",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/challenges/difficulty/MEDIUM?page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["challenges", "difficulty", "MEDIUM"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filtrar Desafios por Skills",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/challenges/skills?skills=Java,Spring Boot&page=0&size=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["challenges", "skills"],
+              "query": [
+                { "key": "skills", "value": "Java,Spring Boot" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Forçar Avaliação Manual (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/evaluations/submission/{{submissionId}}/evaluate",
+              "host": ["{{baseUrl}}"],
+              "path": ["evaluations", "submission", "{{submissionId}}", "evaluate"]
+            }
+          }
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/actuator/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "OpenAPI Docs (JSON)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api-docs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-docs"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
