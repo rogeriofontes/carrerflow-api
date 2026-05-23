@@ -1,0 +1,53 @@
+### ===========================
+### STUDENT PROFILE MODULE
+### ===========================
+
+### -------------------------------------------------------
+### 1. Criar perfil de estudante
+###    (Requer: login como STUDENT primeiro → 01-auth.http #6)
+### -------------------------------------------------------
+POST {{base_url}}/students
+Content-Type: application/json
+Authorization: Bearer {{student_token}}
+
+{
+  "course": "Engenharia de Software",
+  "institution": "Universidade Federal de Minas Gerais",
+  "skills": ["Java", "Spring Boot", "PostgreSQL", "Docker", "Kubernetes"]
+}
+
+> {%
+    client.global.set("student_profile_id", response.body.id);
+    client.log("Student Profile ID salvo: " + response.body.id);
+%}
+
+### -------------------------------------------------------
+### 2. Ver meu perfil de estudante
+### -------------------------------------------------------
+GET {{base_url}}/students/me
+Authorization: Bearer {{student_token}}
+
+### -------------------------------------------------------
+### 3. Atualizar meu perfil de estudante
+### -------------------------------------------------------
+PUT {{base_url}}/students/me
+Content-Type: application/json
+Authorization: Bearer {{student_token}}
+
+{
+  "course": "Engenharia de Software",
+  "institution": "Universidade Federal de Minas Gerais",
+  "skills": ["Java", "Spring Boot", "PostgreSQL", "Docker", "Kubernetes", "React", "TypeScript"]
+}
+
+### -------------------------------------------------------
+### 4. Listar todos os perfis de estudantes (paginado)
+### -------------------------------------------------------
+GET {{base_url}}/students?page=0&size=20
+Authorization: Bearer {{admin_token}}
+
+### -------------------------------------------------------
+### 5. Buscar perfil de estudante por ID
+### -------------------------------------------------------
+GET {{base_url}}/students/{{student_profile_id}}
+Authorization: Bearer {{admin_token}}

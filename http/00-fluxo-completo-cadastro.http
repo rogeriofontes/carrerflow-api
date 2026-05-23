@@ -1,0 +1,187 @@
+### =============================================================
+### CAREERFLOW — FLUXO COMPLETO DE CADASTRO E USO
+### =============================================================
+### Execute as requests na ordem para testar o fluxo completo.
+### Os tokens e IDs são salvos automaticamente entre requests.
+###
+### Ambiente: selecione "dev" no IntelliJ (Run with → dev)
+### =============================================================
+
+
+### ======================== PASSO 1 ========================
+### Registrar um Estudante
+### ==========================================================
+POST {{base_url}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "email": "joao@student.com",
+  "password": "senha1234",
+  "role": "STUDENT"
+}
+
+> {%
+    client.global.set("student_token", response.body.accessToken);
+    client.global.set("student_user_id", response.body.user.id);
+    client.log("✓ Estudante registrado — Token salvo");
+%}
+
+
+### ======================== PASSO 2 ========================
+### Registrar uma Empresa
+### ==========================================================
+POST {{base_url}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "TechCorp RH",
+  "email": "rh@novaempresa.com",
+  "password": "senha1234",
+  "role": "COMPANY"
+}
+
+> {%
+    client.global.set("company_token", response.body.accessToken);
+    client.global.set("company_user_id", response.body.user.id);
+    client.log("✓ Empresa registrada — Token salvo");
+%}
+
+
+### ======================== PASSO 3 ========================
+### Estudante cria seu perfil
+### ==========================================================
+POST {{base_url}}/students
+Content-Type: application/json
+Authorization: Bearer {{student_token}}
+
+{
+  "course": "Engenharia de Software",
+  "institution": "Universidade Federal de Minas Gerais",
+  "skills": ["Java", "Spring Boot", "PostgreSQL", "Docker"]
+}
+
+> {%
+    client.global.set("student_profile_id", response.body.id);
+    client.log("✓ Perfil de estudante criado — ID: " + response.body.id);
+%}
+
+
+### ======================== PASSO 4 ========================
+### Empresa cria seu perfil
+### ==========================================================
+POST {{base_url}}/companies
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "name": "TechCorp Solutions",
+  "segment": "Technology",
+  "description": "Empresa líder em desenvolvimento de software corporativo",
+  "website": "https://techcorp.com.br"
+}
+
+> {%
+    client.global.set("company_id", response.body.id);
+    client.log("✓ Perfil de empresa criado — ID: " + response.body.id);
+%}
+
+
+### ======================== PASSO 5 ========================
+### Empresa cria um desafio
+### ==========================================================
+POST {{base_url}}/challenges
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "title": "Desenvolver API REST com Spring Boot",
+  "description": "Crie uma API REST completa com autenticação JWT, CRUD, paginação e documentação Swagger.",
+  "difficulty": "MEDIUM",
+  "skills": ["Java", "Spring Boot", "REST"]
+}
+
+> {%
+    client.global.set("challenge_id", response.body.id);
+    client.log("✓ Desafio criado — ID: " + response.body.id);
+%}
+
+
+### ======================== PASSO 6 ========================
+### Estudante lista desafios disponíveis
+### ==========================================================
+GET {{base_url}}/challenges?page=0&size=20
+
+
+### ======================== PASSO 7 ========================
+### Estudante submete resposta STAR
+### ==========================================================
+POST {{base_url}}/submissions
+Content-Type: application/json
+Authorization: Bearer {{student_token}}
+
+{
+  "challengeId": "{{challenge_id}}",
+  "situation": "Na empresa onde eu estagiava, o sistema legado de gestão de tarefas causava lentidão constante e erros frequentes. A equipe perdia em média 2 horas por dia.",
+  "task": "Fui designado para redesenhar a API principal, migrando de um monolito para uma arquitetura REST moderna, com prazo de 3 meses.",
+  "action": "Implementei a nova API usando Spring Boot 3 com Clean Architecture. Criei autenticação JWT com RBAC, testes automatizados com 85% de cobertura e deploy com Docker.",
+  "result": "O tempo de resposta caiu 60%, os erros reduziram 90% e a equipe ganhou autonomia com a documentação automática. Entregue 2 semanas antes do prazo."
+}
+
+> {%
+    client.global.set("submission_id", response.body.id);
+    client.log("✓ Submissão STAR enviada — ID: " + response.body.id);
+%}
+
+
+### ======================== PASSO 8 ========================
+### Aguardar avaliação e consultar resultado
+### (A avaliação é assíncrona — aguarde ~2s após a submissão)
+### ==========================================================
+GET {{base_url}}/evaluations/submission/{{submission_id}}
+Authorization: Bearer {{student_token}}
+
+
+### ======================== PASSO 9 ========================
+### Ver perfil do estudante com score atualizado
+### ==========================================================
+GET {{base_url}}/students/me
+Authorization: Bearer {{student_token}}
+
+
+### ======================== PASSO 10 ========================
+### Empresa busca matching de estudantes por skills e score
+### ==========================================================
+POST {{base_url}}/matching/search?page=0&size=20
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "skills": ["Java", "Spring Boot"],
+  "minScore": 0.0,
+  "minChallengesCompleted": 0
+}
+
+
+### ======================== PASSO 11 ========================
+### Login como Admin (seed) para ver dashboard
+### ==========================================================
+POST {{base_url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@careerflow.com",
+  "password": "admin123!"
+}
+
+> {%
+    client.global.set("admin_token", response.body.accessToken);
+    client.log("✓ Admin logado — Token salvo");
+%}
+
+
+### ======================== PASSO 12 ========================
+### Dashboard analítico
+### ==========================================================
+GET {{base_url}}/analytics/dashboard
+Authorization: Bearer {{admin_token}}

@@ -1,0 +1,32 @@
+### ===========================
+### USER MODULE
+### ===========================
+
+### -------------------------------------------------------
+### 1. Ver meu perfil (qualquer usuário autenticado)
+### -------------------------------------------------------
+GET {{base_url}}/users/me
+Authorization: Bearer {{admin_token}}
+
+### -------------------------------------------------------
+### 2. Listar todos os usuários (Admin only) - Paginado
+### -------------------------------------------------------
+GET {{base_url}}/users?page=0&size=20
+Authorization: Bearer {{admin_token}}
+
+### -------------------------------------------------------
+### 3. Buscar usuário por ID (Admin only)
+### -------------------------------------------------------
+GET {{base_url}}/users/{{student_user_id}}
+Authorization: Bearer {{admin_token}}
+
+### -------------------------------------------------------
+### 4. Desativar usuário (Admin only)
+### -------------------------------------------------------
+DELETE {{base_url}}/users/{{student_user_id}}
+Authorization: Bearer {{admin_token}}
+
+### -------------------------------------------------------
+### 5. Tentar acessar sem token (deve retornar 401)
+### -------------------------------------------------------
+GET {{base_url}}/users/me

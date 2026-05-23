@@ -1,0 +1,68 @@
+### ===========================
+### MATCHING MODULE
+### ===========================
+
+### -------------------------------------------------------
+### 1. Buscar estudantes por skills (COMPANY ou ADMIN)
+### -------------------------------------------------------
+POST {{base_url}}/matching/search?page=0&size=20
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "skills": ["Java", "Spring Boot"],
+  "minScore": 0.0,
+  "minChallengesCompleted": 0
+}
+
+### -------------------------------------------------------
+### 2. Buscar estudantes com score mínimo alto
+### -------------------------------------------------------
+POST {{base_url}}/matching/search?page=0&size=20
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "skills": ["Java"],
+  "minScore": 7.0,
+  "minChallengesCompleted": 1
+}
+
+### -------------------------------------------------------
+### 3. Buscar apenas por score (sem filtro de skills)
+### -------------------------------------------------------
+POST {{base_url}}/matching/search?page=0&size=20
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "skills": [],
+  "minScore": 3.0,
+  "minChallengesCompleted": 0
+}
+
+### -------------------------------------------------------
+### 4. Buscar estudantes com skills de DevOps
+### -------------------------------------------------------
+POST {{base_url}}/matching/search?page=0&size=20
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "skills": ["Docker", "Kubernetes"],
+  "minScore": 0.0,
+  "minChallengesCompleted": 0
+}
+
+### -------------------------------------------------------
+### 5. Tentar matching como Student (deve retornar 403)
+### -------------------------------------------------------
+POST {{base_url}}/matching/search?page=0&size=20
+Content-Type: application/json
+Authorization: Bearer {{student_token}}
+
+{
+  "skills": ["Java"],
+  "minScore": 0.0,
+  "minChallengesCompleted": 0
+}

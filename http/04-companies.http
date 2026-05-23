@@ -1,0 +1,55 @@
+### ===========================
+### COMPANY MODULE
+### ===========================
+
+### -------------------------------------------------------
+### 1. Criar perfil de empresa
+###    (Requer: login como COMPANY primeiro → 01-auth.http #7)
+### -------------------------------------------------------
+POST {{base_url}}/companies
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "name": "TechCorp Solutions",
+  "segment": "Technology",
+  "description": "Empresa líder em desenvolvimento de software corporativo e soluções em nuvem",
+  "website": "https://techcorp.com.br"
+}
+
+> {%
+    client.global.set("company_id", response.body.id);
+    client.log("Company ID salvo: " + response.body.id);
+%}
+
+### -------------------------------------------------------
+### 2. Ver meu perfil de empresa
+### -------------------------------------------------------
+GET {{base_url}}/companies/me
+Authorization: Bearer {{company_token}}
+
+### -------------------------------------------------------
+### 3. Atualizar meu perfil de empresa
+### -------------------------------------------------------
+PUT {{base_url}}/companies/me
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "name": "TechCorp Solutions LTDA",
+  "segment": "Technology & Innovation",
+  "description": "Empresa líder em desenvolvimento de software corporativo, IA e soluções em nuvem",
+  "website": "https://techcorp.com.br"
+}
+
+### -------------------------------------------------------
+### 4. Listar todas as empresas (paginado)
+### -------------------------------------------------------
+GET {{base_url}}/companies?page=0&size=20
+Authorization: Bearer {{admin_token}}
+
+### -------------------------------------------------------
+### 5. Buscar empresa por ID
+### -------------------------------------------------------
+GET {{base_url}}/companies/{{company_id}}
+Authorization: Bearer {{admin_token}}
