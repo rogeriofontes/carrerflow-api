@@ -1,0 +1,83 @@
+### ===========================
+### CHALLENGE MODULE
+### ===========================
+
+### -------------------------------------------------------
+### 1. Criar desafio (COMPANY ou ADMIN)
+###    (Requer: login como COMPANY + ter perfil de empresa criado)
+### -------------------------------------------------------
+POST {{base_url}}/challenges
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "title": "Desenvolver API REST com Spring Boot",
+  "description": "Crie uma API REST completa para gerenciamento de tarefas, incluindo autenticação JWT, CRUD de tarefas, paginação, filtros e documentação com Swagger. A API deve seguir boas práticas de Clean Architecture.",
+  "difficulty": "MEDIUM",
+  "skills": ["Java", "Spring Boot", "REST", "JWT"]
+}
+
+> {%
+    client.global.set("challenge_id", response.body.id);
+    client.log("Challenge ID salvo: " + response.body.id);
+%}
+
+### -------------------------------------------------------
+### 2. Criar segundo desafio (HARD)
+### -------------------------------------------------------
+POST {{base_url}}/challenges
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "title": "Otimização de Banco de Dados PostgreSQL",
+  "description": "Analise e otimize queries SQL em um sistema com milhões de registros. Identifique gargalos de performance, crie índices estratégicos e implemente particionamento de tabelas.",
+  "difficulty": "HARD",
+  "skills": ["SQL", "PostgreSQL", "Performance", "Database"]
+}
+
+### -------------------------------------------------------
+### 3. Criar terceiro desafio (EXPERT)
+### -------------------------------------------------------
+POST {{base_url}}/challenges
+Content-Type: application/json
+Authorization: Bearer {{company_token}}
+
+{
+  "title": "Arquitetura de Microsserviços com Event-Driven",
+  "description": "Decomponha um monolito em microsserviços usando Spring Boot, Docker e Kubernetes. Implemente comunicação assíncrona com Kafka, Circuit Breaker e distributed tracing com OpenTelemetry.",
+  "difficulty": "EXPERT",
+  "skills": ["Microsserviços", "Docker", "Kubernetes", "Kafka", "Spring Boot"]
+}
+
+### -------------------------------------------------------
+### 4. Listar todos os desafios ativos (público - sem token)
+### -------------------------------------------------------
+GET {{base_url}}/challenges?page=0&size=20
+
+### -------------------------------------------------------
+### 5. Filtrar desafios por dificuldade
+### -------------------------------------------------------
+GET {{base_url}}/challenges/difficulty/MEDIUM?page=0&size=20
+
+###
+GET {{base_url}}/challenges/difficulty/HARD?page=0&size=20
+
+###
+GET {{base_url}}/challenges/difficulty/EXPERT?page=0&size=20
+
+### -------------------------------------------------------
+### 6. Filtrar desafios por skills
+### -------------------------------------------------------
+GET {{base_url}}/challenges/skills?skills=Java,Spring Boot&page=0&size=20
+
+### -------------------------------------------------------
+### 7. Buscar desafio por ID
+### -------------------------------------------------------
+GET {{base_url}}/challenges/{{challenge_id}}
+
+### -------------------------------------------------------
+### 8. Desativar desafio (COMPANY ou ADMIN)
+### -------------------------------------------------------
+DELETE {{base_url}}/challenges/{{challenge_id}}
+Authorization: Bearer {{company_token}}

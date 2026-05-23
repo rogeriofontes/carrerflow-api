@@ -1,0 +1,138 @@
+### ===========================
+### AUTH MODULE
+### ===========================
+
+### -------------------------------------------------------
+### 1. Registrar novo Estudante
+### -------------------------------------------------------
+POST {{base_url}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "email": "joao@student.com",
+  "password": "senha1234",
+  "role": "STUDENT"
+}
+
+> {%
+    client.global.set("student_token", response.body.accessToken);
+    client.global.set("student_user_id", response.body.user.id);
+    client.log("Student Token salvo!");
+%}
+
+### -------------------------------------------------------
+### 2. Registrar nova Empresa
+### -------------------------------------------------------
+POST {{base_url}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Tech Corp RH",
+  "email": "rh@novaempresa.com",
+  "password": "senha1234",
+  "role": "COMPANY"
+}
+
+> {%
+    client.global.set("company_token", response.body.accessToken);
+    client.global.set("company_user_id", response.body.user.id);
+    client.log("Company Token salvo!");
+%}
+
+### -------------------------------------------------------
+### 3. Registrar nova Instituição
+### -------------------------------------------------------
+POST {{base_url}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Universidade ABC",
+  "email": "coord@uniabc.edu.br",
+  "password": "senha1234",
+  "role": "INSTITUTION"
+}
+
+> {%
+    client.global.set("institution_token", response.body.accessToken);
+    client.log("Institution Token salvo!");
+%}
+
+### -------------------------------------------------------
+### 4. Registrar Admin
+### -------------------------------------------------------
+POST {{base_url}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Novo Admin",
+  "email": "novo.admin@careerflow.com",
+  "password": "senha1234",
+  "role": "ADMIN"
+}
+
+> {%
+    client.global.set("admin_token", response.body.accessToken);
+    client.log("Admin Token salvo!");
+%}
+
+### -------------------------------------------------------
+### 5. Login como Admin (usuário seed)
+### -------------------------------------------------------
+POST {{base_url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{admin_email}}",
+  "password": "{{admin_password}}"
+}
+
+> {%
+    client.global.set("admin_token", response.body.accessToken);
+    client.log("Admin Token salvo!");
+%}
+
+### -------------------------------------------------------
+### 6. Login como Estudante (usuário seed)
+### -------------------------------------------------------
+POST {{base_url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{student_email}}",
+  "password": "{{student_password}}"
+}
+
+> {%
+    client.global.set("student_token", response.body.accessToken);
+    client.global.set("student_user_id", response.body.user.id);
+    client.log("Student Token salvo!");
+%}
+
+### -------------------------------------------------------
+### 7. Login como Empresa (usuário seed)
+### -------------------------------------------------------
+POST {{base_url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{company_email}}",
+  "password": "{{company_password}}"
+}
+
+> {%
+    client.global.set("company_token", response.body.accessToken);
+    client.global.set("company_user_id", response.body.user.id);
+    client.log("Company Token salvo!");
+%}
+
+### -------------------------------------------------------
+### 8. Login com credenciais inválidas (deve retornar 401)
+### -------------------------------------------------------
+POST {{base_url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "naoexiste@test.com",
+  "password": "senhaerrada"
+}

@@ -1,0 +1,23 @@
+### ===========================
+### ANALYTICS MODULE
+### ===========================
+
+### -------------------------------------------------------
+### 1. Dashboard geral (ADMIN ou INSTITUTION)
+###    Retorna: total de estudantes, empresas, desafios,
+###    submissões, score médio e top 10 estudantes.
+### -------------------------------------------------------
+GET {{base_url}}/analytics/dashboard
+Authorization: Bearer {{admin_token}}
+
+### -------------------------------------------------------
+### 2. Dashboard como Instituição
+### -------------------------------------------------------
+GET {{base_url}}/analytics/dashboard
+Authorization: Bearer {{institution_token}}
+
+### -------------------------------------------------------
+### 3. Tentar acessar dashboard como Student (deve retornar 403)
+### -------------------------------------------------------
+GET {{base_url}}/analytics/dashboard
+Authorization: Bearer {{student_token}}

@@ -1,0 +1,64 @@
+### ===========================
+### SUBMISSION MODULE (STAR)
+### ===========================
+
+### -------------------------------------------------------
+### 1. Submeter resposta STAR para um desafio
+###    (Requer: login como STUDENT + ter perfil criado)
+###    Usar challenge_id de um desafio seed: 10000000-0000-0000-0000-000000000001
+### -------------------------------------------------------
+POST {{base_url}}/submissions
+Content-Type: application/json
+Authorization: Bearer {{student_token}}
+
+{
+  "challengeId": "10000000-0000-0000-0000-000000000001",
+  "situation": "Na empresa onde eu estagiava, o sistema legado de gestão de tarefas causava lentidão constante e erros frequentes no atendimento ao cliente. A equipe perdia em média 2 horas por dia com workarounds.",
+  "task": "Fui designado como responsável por redesenhar a API principal do sistema, migrando de uma arquitetura monolítica legada para uma API REST moderna, com prazo de 3 meses.",
+  "action": "Implementei a nova API usando Spring Boot 3 com Clean Architecture e DDD. Criei autenticação JWT com RBAC, documentação automática com Swagger, testes unitários e de integração com 85% de cobertura. Configurei CI/CD com GitHub Actions e deploy automatizado com Docker.",
+  "result": "O tempo de resposta da API caiu 60%, os erros em produção reduziram 90%, e a equipe de desenvolvimento ganhou autonomia com a documentação automática. O projeto foi entregue 2 semanas antes do prazo."
+}
+
+> {%
+    client.global.set("submission_id", response.body.id);
+    client.log("Submission ID salvo: " + response.body.id);
+%}
+
+### -------------------------------------------------------
+### 2. Segunda submissão STAR (outro desafio)
+### -------------------------------------------------------
+POST {{base_url}}/submissions
+Content-Type: application/json
+Authorization: Bearer {{student_token}}
+
+{
+  "challengeId": "10000000-0000-0000-0000-000000000002",
+  "situation": "O banco de dados do sistema de e-commerce da empresa tinha mais de 50 milhões de registros e as consultas de relatórios demoravam mais de 30 segundos, impactando o dashboard do time comercial.",
+  "task": "Recebi a tarefa de analisar e otimizar as queries mais críticas do sistema, reduzindo o tempo de resposta para menos de 3 segundos.",
+  "action": "Realizei profiling com EXPLAIN ANALYZE nas 10 queries mais lentas. Criei índices compostos estratégicos, implementei particionamento por data nas tabelas de transações e refatorei as queries usando CTEs e window functions. Também configurei connection pooling com HikariCP.",
+  "result": "O tempo médio das queries críticas caiu de 30s para 1.2s (redução de 96%). O uso de CPU do banco reduziu 40% e o time comercial passou a ter dashboards em tempo real."
+}
+
+> {%
+    client.global.set("submission_id_2", response.body.id);
+    client.log("Submission 2 ID salvo: " + response.body.id);
+%}
+
+### -------------------------------------------------------
+### 3. Ver submissão por ID
+### -------------------------------------------------------
+GET {{base_url}}/submissions/{{submission_id}}
+Authorization: Bearer {{student_token}}
+
+### -------------------------------------------------------
+### 4. Listar submissões por estudante
+###    (usar student_profile_id do seed: e0000000-0000-0000-0000-000000000001)
+### -------------------------------------------------------
+GET {{base_url}}/submissions/student/e0000000-0000-0000-0000-000000000001?page=0&size=20
+Authorization: Bearer {{student_token}}
+
+### -------------------------------------------------------
+### 5. Listar submissões por desafio
+### -------------------------------------------------------
+GET {{base_url}}/submissions/challenge/10000000-0000-0000-0000-000000000001?page=0&size=20
+Authorization: Bearer {{admin_token}}

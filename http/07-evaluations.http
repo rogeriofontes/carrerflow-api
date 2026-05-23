@@ -1,0 +1,24 @@
+### ===========================
+### STAR EVALUATION MODULE
+### ===========================
+
+### -------------------------------------------------------
+### 1. Ver avaliação de uma submissão
+###    (A avaliação é criada automaticamente via evento assíncrono
+###     após a submissão. Pode levar alguns segundos.)
+### -------------------------------------------------------
+GET {{base_url}}/evaluations/submission/{{submission_id}}
+Authorization: Bearer {{student_token}}
+
+### -------------------------------------------------------
+### 2. Ver avaliação da segunda submissão
+### -------------------------------------------------------
+GET {{base_url}}/evaluations/submission/{{submission_id_2}}
+Authorization: Bearer {{student_token}}
+
+### -------------------------------------------------------
+### 3. Forçar avaliação manual (Admin only)
+###    Útil se a avaliação assíncrona falhou ou para reavaliar.
+### -------------------------------------------------------
+POST {{base_url}}/evaluations/submission/{{submission_id}}/evaluate
+Authorization: Bearer {{admin_token}}
