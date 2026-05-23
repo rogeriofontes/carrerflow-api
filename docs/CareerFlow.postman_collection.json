@@ -1,0 +1,240 @@
+{
+  "info": {
+    "name": "CareerFlow API",
+    "description": "CareerFlow - Academic Employability Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api/v1" },
+    { "key": "accessToken", "value": "" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Student",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"João Silva\",\n  \"email\": \"joao@student.com\",\n  \"password\": \"password123\",\n  \"role\": \"STUDENT\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["var jsonData = pm.response.json();", "pm.collectionVariables.set('accessToken', jsonData.accessToken);"]
+            }
+          }]
+        },
+        {
+          "name": "Register Company",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tech Corp RH\",\n  \"email\": \"rh@newcompany.com\",\n  \"password\": \"password123\",\n  \"role\": \"COMPANY\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@careerflow.com\",\n  \"password\": \"admin123!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["var jsonData = pm.response.json();", "pm.collectionVariables.set('accessToken', jsonData.accessToken);"]
+            }
+          }]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users/me", "host": ["{{baseUrl}}"], "path": ["users", "me"] }
+          }
+        },
+        {
+          "name": "List All Users (Admin)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users?page=0&size=20", "host": ["{{baseUrl}}"], "path": ["users"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "20" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Student Profiles",
+      "item": [
+        {
+          "name": "Create Student Profile",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"course\": \"Engenharia de Software\",\n  \"institution\": \"Universidade Federal\",\n  \"skills\": [\"Java\", \"Spring Boot\", \"PostgreSQL\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/students", "host": ["{{baseUrl}}"], "path": ["students"] }
+          }
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/students/me", "host": ["{{baseUrl}}"], "path": ["students", "me"] }
+          }
+        },
+        {
+          "name": "List All Students",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/students?page=0&size=20", "host": ["{{baseUrl}}"], "path": ["students"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "20" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Companies",
+      "item": [
+        {
+          "name": "Create Company",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"TechCorp Solutions\",\n  \"segment\": \"Technology\",\n  \"description\": \"Software development company\",\n  \"website\": \"https://techcorp.com\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/companies", "host": ["{{baseUrl}}"], "path": ["companies"] }
+          }
+        },
+        {
+          "name": "List All Companies",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/companies?page=0&size=20", "host": ["{{baseUrl}}"], "path": ["companies"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "20" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Challenges",
+      "item": [
+        {
+          "name": "Create Challenge",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Desenvolver API REST\",\n  \"description\": \"Crie uma API REST completa com autenticação\",\n  \"difficulty\": \"MEDIUM\",\n  \"skills\": [\"Java\", \"Spring Boot\", \"REST\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/challenges", "host": ["{{baseUrl}}"], "path": ["challenges"] }
+          }
+        },
+        {
+          "name": "List All Challenges",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/challenges?page=0&size=20", "host": ["{{baseUrl}}"], "path": ["challenges"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "20" }] }
+          }
+        },
+        {
+          "name": "Filter by Difficulty",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/challenges/difficulty/MEDIUM", "host": ["{{baseUrl}}"], "path": ["challenges", "difficulty", "MEDIUM"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Submissions",
+      "item": [
+        {
+          "name": "Submit STAR Response",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"challengeId\": \"10000000-0000-0000-0000-000000000001\",\n  \"situation\": \"Na empresa onde eu trabalhava, o sistema de gestão de tarefas estava desatualizado.\",\n  \"task\": \"Fui designado para desenvolver uma API REST moderna.\",\n  \"action\": \"Implementei usando Spring Boot 3, JWT, e documentação com Swagger.\",\n  \"result\": \"A equipe aumentou a produtividade em 40% com o novo sistema.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/submissions", "host": ["{{baseUrl}}"], "path": ["submissions"] }
+          }
+        },
+        {
+          "name": "Get Submission",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/submissions/{{submissionId}}", "host": ["{{baseUrl}}"], "path": ["submissions", "{{submissionId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Evaluations",
+      "item": [
+        {
+          "name": "Get Evaluation by Submission",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/evaluations/submission/{{submissionId}}", "host": ["{{baseUrl}}"], "path": ["evaluations", "submission", "{{submissionId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/analytics/dashboard", "host": ["{{baseUrl}}"], "path": ["analytics", "dashboard"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Matching",
+      "item": [
+        {
+          "name": "Search Matching Students",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skills\": [\"Java\", \"Spring Boot\"],\n  \"minScore\": 5.0,\n  \"minChallengesCompleted\": 1\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/matching/search?page=0&size=20", "host": ["{{baseUrl}}"], "path": ["matching", "search"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "20" }] }
+          }
+        }
+      ]
+    }
+  ]
+}

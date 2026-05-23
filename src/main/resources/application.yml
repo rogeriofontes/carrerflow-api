@@ -1,0 +1,65 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: careerflow-api
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:careerflow}
+    username: ${DB_USER:careerflow}
+    password: ${DB_PASSWORD:careerflow}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+careerflow:
+  jwt:
+    secret: ${JWT_SECRET:Y2FyZWVyZmxvdy1zZWNyZXQta2V5LWZvci1kZXZlbG9wbWVudC1vbmx5LTEyMzQ1Njc4OQ==}
+    expiration-ms: 86400000
+    refresh-expiration-ms: 604800000
+  openai:
+    api-key: ${OPENAI_API_KEY:}
+    model: gpt-4o-mini
+    base-url: https://api.openai.com/v1
+    timeout-ms: 30000
+    max-retries: 3
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    com.careerflow: DEBUG
+    org.springframework.security: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [traceId=%X{traceId} spanId=%X{spanId}] %-5level %logger{36} - %msg%n"
