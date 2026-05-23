@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: careerflow-db
+    environment:
+      POSTGRES_DB: careerflow
+      POSTGRES_USER: careerflow
+      POSTGRES_PASSWORD: careerflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U careerflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: careerflow-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: careerflow
+      DB_USER: careerflow
+      DB_PASSWORD: careerflow
+      JWT_SECRET: Y2FyZWVyZmxvdy1zZWNyZXQta2V5LWZvci1kZXZlbG9wbWVudC1vbmx5LTEyMzQ1Njc4OQ==
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
