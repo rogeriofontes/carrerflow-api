@@ -1,24 +1,20 @@
 package com.careerflow.domain.entities;
 
+import com.careerflow.domain.entities.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "submissions")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Submission {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class Submission extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
@@ -40,10 +36,13 @@ public class Submission {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String result;
 
+    @Column(name = "github_url", nullable = false)
+    private String githubUrl;
+
     @Column(name = "submitted_at")
     @CreationTimestamp
     private LocalDateTime submittedAt;
 
-    @OneToOne(mappedBy = "submission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "submission", cascade = CascadeType.ALL)
     private StarEvaluation evaluation;
 }

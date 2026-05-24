@@ -12,6 +12,7 @@ public record SubmissionResponse(
         String action,
         String result,
         LocalDateTime submittedAt,
-        StarEvaluationResponse evaluation
+        StarEvaluationResponse evaluation,
+        String githubUrl
 ) {
 }

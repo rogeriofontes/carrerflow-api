@@ -51,7 +51,8 @@ public class UserService {
                 user.getEmail(),
                 user.getRole(),
                 user.isActive(),
-                user.getCreatedAt()
+                user.getCreatedDate(),
+                user.getLastModifiedDate()
         );
     }
 }

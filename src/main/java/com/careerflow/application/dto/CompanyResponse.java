@@ -9,7 +9,6 @@ public record CompanyResponse(
         String name,
         String segment,
         String description,
-        String website,
-        LocalDateTime createdAt
+        String website
 ) {
 }

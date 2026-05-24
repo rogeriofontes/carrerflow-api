@@ -45,6 +45,7 @@ public class SubmissionService {
                 .task(request.task())
                 .action(request.action())
                 .result(request.result())
+                .githubUrl(request.githubUrl())
                 .build();
 
         submission = submissionRepository.save(submission);
@@ -73,6 +74,11 @@ public class SubmissionService {
         return submissionRepository.findByChallengeId(challengeId, pageable).map(this::toResponse);
     }
 
+    @Transactional(readOnly = true)
+    public SubmissionResponse findAll(Pageable pageable) {
+        return submissionRepository.findAll(pageable).map(this::toResponse).getContent().stream().findFirst().orElse(null);
+    }
+
     private SubmissionResponse toResponse(Submission submission) {
         StarEvaluationResponse evalResponse = null;
         if (submission.getEvaluation() != null) {
@@ -99,7 +105,10 @@ public class SubmissionService {
                 submission.getAction(),
                 submission.getResult(),
                 submission.getSubmittedAt(),
-                evalResponse
+                evalResponse,
+                submission.getGithubUrl()
         );
     }
+
+
 }

@@ -1,27 +1,20 @@
 package com.careerflow.domain.entities;
 
+import com.careerflow.domain.entities.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "student_profiles")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StudentProfile {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class StudentProfile extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
@@ -33,7 +26,7 @@ public class StudentProfile {
     @Column(nullable = false)
     private String institution;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "student_skills", joinColumns = @JoinColumn(name = "student_profile_id"))
     @Column(name = "skill")
     @Builder.Default
@@ -46,12 +39,4 @@ public class StudentProfile {
     @Column(name = "challenges_completed")
     @Builder.Default
     private Integer challengesCompleted = 0;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

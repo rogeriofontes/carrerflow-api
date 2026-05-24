@@ -41,8 +41,7 @@ public class MatchingService {
                 profile.getInstitution(),
                 profile.getSkills(),
                 profile.getOverallScore(),
-                profile.getChallengesCompleted(),
-                profile.getCreatedAt()
+                profile.getChallengesCompleted()
         );
     }
 }

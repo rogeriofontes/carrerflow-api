@@ -1,24 +1,20 @@
 package com.careerflow.domain.entities;
 
+import com.careerflow.domain.entities.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "star_evaluations")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StarEvaluation {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class StarEvaluation extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "submission_id", nullable = false, unique = true)

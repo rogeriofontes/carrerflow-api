@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
+import java.util.UUID;
 
 public record ChallengeRequest(
         @NotBlank(message = "Title is required")
@@ -18,6 +19,9 @@ public record ChallengeRequest(
         Difficulty difficulty,
 
         @NotEmpty(message = "At least one skill is required")
-        List<String> skills
+        List<String> skills,
+
+        @NotNull(message = "Company ID is required")
+        UUID companyId
 ) {
 }

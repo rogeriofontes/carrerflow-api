@@ -13,7 +13,6 @@ public record ChallengeResponse(
         Difficulty difficulty,
         List<String> skills,
         UUID companyId,
-        boolean active,
-        LocalDateTime createdAt
+        boolean active
 ) {
 }

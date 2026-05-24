@@ -27,7 +27,7 @@ public class SubmissionController {
     private final SubmissionService submissionService;
 
     @PostMapping
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasRole('STUDENT') or hasRole('ADMIN')")
     @Operation(summary = "Submit a STAR response")
     public ResponseEntity<SubmissionResponse> create(
             @AuthenticationPrincipal UserPrincipal principal,
@@ -40,6 +40,12 @@ public class SubmissionController {
     @Operation(summary = "Get submission by ID")
     public ResponseEntity<SubmissionResponse> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(submissionService.findById(id));
+    }
+
+    @GetMapping
+    @Operation(summary = "Get submission by ID")
+    public ResponseEntity<SubmissionResponse> findAll(Pageable pageable) {
+        return ResponseEntity.ok(submissionService.findAll(pageable));
     }
 
     @GetMapping("/student/{studentId}")

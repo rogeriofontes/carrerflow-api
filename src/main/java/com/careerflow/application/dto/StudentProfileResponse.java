@@ -12,7 +12,6 @@ public record StudentProfileResponse(
         String institution,
         List<String> skills,
         Double overallScore,
-        Integer challengesCompleted,
-        LocalDateTime createdAt
+        Integer challengesCompleted
 ) {
 }

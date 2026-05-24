@@ -27,7 +27,7 @@ public class StudentProfileController {
     private final StudentProfileService studentProfileService;
 
     @PostMapping
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasRole('STUDENT') or hasRole('ADMIN')")
     @Operation(summary = "Create student profile")
     public ResponseEntity<StudentProfileResponse> create(
             @AuthenticationPrincipal UserPrincipal principal,
@@ -37,7 +37,7 @@ public class StudentProfileController {
     }
 
     @GetMapping("/me")
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasRole('STUDENT') or hasRole('ADMIN')")
     @Operation(summary = "Get current student profile")
     public ResponseEntity<StudentProfileResponse> getMyProfile(
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -45,7 +45,7 @@ public class StudentProfileController {
     }
 
     @PutMapping("/me")
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasRole('STUDENT') or hasRole('ADMIN')")
     @Operation(summary = "Update current student profile")
     public ResponseEntity<StudentProfileResponse> updateMyProfile(
             @AuthenticationPrincipal UserPrincipal principal,

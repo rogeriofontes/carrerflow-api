@@ -27,7 +27,7 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @PostMapping
-    @PreAuthorize("hasRole('COMPANY')")
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN')")
     @Operation(summary = "Create company profile")
     public ResponseEntity<CompanyResponse> create(
             @AuthenticationPrincipal UserPrincipal principal,
@@ -36,8 +36,19 @@ public class CompanyController {
                 .body(companyService.create(principal.user().getId(), request));
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN')")
+    @Operation(summary = "Update company profile by ID")
+    public ResponseEntity<CompanyResponse> update(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable UUID id,
+            @Valid @RequestBody CompanyRequest request) {
+
+        return ResponseEntity.ok(companyService.update(principal.user().getId(), request));
+    }
+
     @GetMapping("/me")
-    @PreAuthorize("hasRole('COMPANY')")
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN')")
     @Operation(summary = "Get current company profile")
     public ResponseEntity<CompanyResponse> getMyCompany(
             @AuthenticationPrincipal UserPrincipal principal) {
@@ -45,7 +56,7 @@ public class CompanyController {
     }
 
     @PutMapping("/me")
-    @PreAuthorize("hasRole('COMPANY')")
+    @PreAuthorize("hasRole('COMPANY') or hasRole('ADMIN')")
     @Operation(summary = "Update current company profile")
     public ResponseEntity<CompanyResponse> updateMyCompany(
             @AuthenticationPrincipal UserPrincipal principal,
@@ -63,5 +74,13 @@ public class CompanyController {
     @Operation(summary = "Get company by ID")
     public ResponseEntity<CompanyResponse> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(companyService.findById(id));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Get company by ID")
+    public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
+        companyService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -35,7 +35,7 @@ public class ChallengeController {
             @AuthenticationPrincipal UserPrincipal principal,
             @Valid @RequestBody ChallengeRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(challengeService.create(principal.user().getId(), request));
+                .body(challengeService.create(request));
     }
 
     @GetMapping

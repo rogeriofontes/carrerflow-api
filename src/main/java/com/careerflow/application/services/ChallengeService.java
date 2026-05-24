@@ -26,9 +26,10 @@ public class ChallengeService {
     private final CompanyRepository companyRepository;
 
     @Transactional
-    public ChallengeResponse create(UUID companyUserId, ChallengeRequest request) {
-        Company company = companyRepository.findByUserId(companyUserId)
-                .orElseThrow(() -> new IllegalArgumentException("Company not found for user: " + companyUserId));
+    public ChallengeResponse create(ChallengeRequest request) {
+        UUID companyId = request.companyId();
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found for user: " + companyId));
 
         Challenge challenge = Challenge.builder()
                 .title(request.title())
@@ -86,8 +87,7 @@ public class ChallengeService {
                 challenge.getDifficulty(),
                 challenge.getSkills(),
                 challenge.getCompany() != null ? challenge.getCompany().getId() : null,
-                challenge.isActive(),
-                challenge.getCreatedAt()
+                challenge.isActive()
         );
     }
 }

@@ -28,10 +28,6 @@ public class CompanyService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
 
-        companyRepository.findByUserId(userId).ifPresent(c -> {
-            throw new IllegalArgumentException("Company profile already exists for user: " + userId);
-        });
-
         Company company = Company.builder()
                 .user(user)
                 .name(request.name())
@@ -78,6 +74,16 @@ public class CompanyService {
         return toResponse(company);
     }
 
+    @Transactional(readOnly = true)
+    public Page<CompanyResponse> findAllByUserId(UUID userId, Pageable pageable) {
+        return companyRepository.findAllByUserId(userId, pageable).map(this::toResponse);
+    }
+
+    @Transactional
+    public void deleteById(UUID id) {
+        companyRepository.deleteById(id);
+    }
+
     private CompanyResponse toResponse(Company company) {
         return new CompanyResponse(
                 company.getId(),
@@ -85,8 +91,9 @@ public class CompanyService {
                 company.getName(),
                 company.getSegment(),
                 company.getDescription(),
-                company.getWebsite(),
-                company.getCreatedAt()
+                company.getWebsite()
         );
     }
+
+
 }

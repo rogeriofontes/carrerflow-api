@@ -19,6 +19,9 @@ public record SubmissionRequest(
         String action,
 
         @NotBlank(message = "Result is required")
-        String result
+        String result,
+
+        @NotBlank(message = "GitHub URL is required")
+        String githubUrl
 ) {
 }

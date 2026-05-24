@@ -1,25 +1,25 @@
 -- Seed: Admin user (password: admin123!)
-INSERT INTO users (id, name, email, password, role) VALUES
-('a0000000-0000-0000-0000-000000000001', 'Admin CareerFlow', 'admin@careerflow.com',
- '$2a$10$xn3LI/AjqicFYZFruSwve.zOH5hLxCCjYq9tqKC0rDXQECCfBBLi', 'ADMIN');
+--INSERT INTO users (id, name, email, password, role) VALUES
+--('a0000000-0000-0000-0000-000000000001', 'Admin CareerFlow', 'admin@careerflow.com',
+--'$2a$10$xn3LI/AjqicFYZFruSwve.zOH5hLxCCjYq9tqKC0rDXQECCfBBLi', 'ADMIN');
 
 -- Seed: Student user (password: student123!)
-INSERT INTO users (id, name, email, password, role) VALUES
-('b0000000-0000-0000-0000-000000000001', 'Maria Silva', 'maria@student.com',
- '$2a$10$xn3LI/AjqicFYZFruSwve.zOH5hLxCCjYq9tqKC0rDXQECCfBBLi', 'STUDENT');
+--INSERT INTO users (id, name, email, password, role) VALUES
+--('b0000000-0000-0000-0000-000000000001', 'Maria Silva', 'maria@student.com',
+-- '$2a$10$xn3LI/AjqicFYZFruSwve.zOH5hLxCCjYq9tqKC0rDXQECCfBBLi', 'STUDENT');
 
 -- Seed: Company user (password: company123!)
-INSERT INTO users (id, name, email, password, role) VALUES
-('c0000000-0000-0000-0000-000000000001', 'TechCorp', 'rh@techcorp.com',
- '$2a$10$xn3LI/AjqicFYZFruSwve.zOH5hLxCCjYq9tqKC0rDXQECCfBBLi', 'COMPANY');
+--INSERT INTO users (id, name, email, password, role) VALUES
+--('c0000000-0000-0000-0000-000000000001', 'TechCorp', 'rh@techcorp.com',
+-- '$2a$10$xn3LI/AjqicFYZFruSwve.zOH5hLxCCjYq9tqKC0rDXQECCfBBLi', 'COMPANY');
 
 -- Seed: Institution user (password: inst123!)
-INSERT INTO users (id, name, email, password, role) VALUES
-('d0000000-0000-0000-0000-000000000001', 'Universidade XYZ', 'coord@unixyz.edu.br',
- '$2a$10$xn3LI/AjqicFYZFruSwve.zOH5hLxCCjYq9tqKC0rDXQECCfBBLi', 'INSTITUTION');
+--INSERT INTO users (id, name, email, password, role) VALUES
+--('d0000000-0000-0000-0000-000000000001', 'Universidade XYZ', 'coord@unixyz.edu.br',
+--'$2a$10$xn3LI/AjqicFYZFruSwve.zOH5hLxCCjYq9tqKC0rDXQECCfBBLi', 'INSTITUTION');
 
 -- Seed: Student Profile
-INSERT INTO student_profiles (id, user_id, course, institution, overall_score, challenges_completed) VALUES
+/*INSERT INTO student_profiles (id, user_id, course, institution, overall_score, challenges_completed) VALUES
 ('e0000000-0000-0000-0000-000000000001', 'b0000000-0000-0000-0000-000000000001',
  'Engenharia de Software', 'Universidade XYZ', 0.0, 0);
 
@@ -59,3 +59,4 @@ INSERT INTO challenge_skills (challenge_id, skill) VALUES
 ('10000000-0000-0000-0000-000000000003', 'Microsserviços'),
 ('10000000-0000-0000-0000-000000000003', 'Docker'),
 ('10000000-0000-0000-0000-000000000003', 'Kubernetes');
+*/

@@ -1,5 +1,6 @@
 package com.careerflow.domain.entities;
 
+import com.careerflow.domain.entities.base.BaseEntity;
 import com.careerflow.domain.valueobjects.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,11 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
@@ -38,12 +35,4 @@ public class User {
     @Column(nullable = false)
     @Builder.Default
     private boolean active = true;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

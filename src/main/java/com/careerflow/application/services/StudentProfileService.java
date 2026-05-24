@@ -94,8 +94,7 @@ public class StudentProfileService {
                 profile.getInstitution(),
                 profile.getSkills(),
                 profile.getOverallScore(),
-                profile.getChallengesCompleted(),
-                profile.getCreatedAt()
+                profile.getChallengesCompleted()
         );
     }
 }
