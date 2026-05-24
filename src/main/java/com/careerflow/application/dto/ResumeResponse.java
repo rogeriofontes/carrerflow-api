@@ -2,7 +2,6 @@ package com.careerflow.application.dto;
 
 import com.careerflow.domain.entities.Resume;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

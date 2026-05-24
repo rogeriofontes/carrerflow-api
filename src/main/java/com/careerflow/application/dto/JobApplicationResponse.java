@@ -3,7 +3,6 @@ package com.careerflow.application.dto;
 import com.careerflow.domain.entities.ApplicationStatus;
 import com.careerflow.domain.entities.JobApplication;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;

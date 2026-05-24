@@ -2,7 +2,6 @@ package com.careerflow.application.dto;
 
 import com.careerflow.domain.valueobjects.Difficulty;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

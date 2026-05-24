@@ -2,7 +2,6 @@ package com.careerflow.application.services;
 
 import com.careerflow.application.dto.JobApplicationRequest;
 import com.careerflow.application.dto.JobApplicationResponse;
-import com.careerflow.application.dto.UserResponse;
 import com.careerflow.domain.entities.ApplicationStatus;
 import com.careerflow.domain.entities.Company;
 import com.careerflow.domain.entities.JobApplication;
